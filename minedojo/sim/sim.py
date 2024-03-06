@@ -379,7 +379,7 @@ class MineDojoSim(gym.Env):
             seed=self.new_seed,
         )
 
-        self._bridge_env = BridgeEnv(is_fault_tolerant=True, seed=self.new_seed)
+        self._bridge_env = BridgeEnv(is_fault_tolerant=False, seed=self.new_seed)
 
         self._prev_obs = None
         self._prev_action = None
