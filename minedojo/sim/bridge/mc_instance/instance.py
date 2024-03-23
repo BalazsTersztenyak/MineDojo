@@ -176,11 +176,10 @@ class MinecraftInstance:
             client_ready = False
             server_ready = False
 
+            mine_log_encoding = locale.getencoding()
+            
             while True:
-                mine_log_encoding = locale.getpreferredencoding(False)
-                line = self.minecraft_process.stdout.readline().decode(
-                    mine_log_encoding
-                )
+                line = self.minecraft_process.stdout.readline().decode(mine_log_encoding)
 
                 if os.environ.get("MINEDOJO_DEBUG_LOG", False):
                     # Print Java logs to console
@@ -244,7 +243,7 @@ class MinecraftInstance:
 
                 mine_log = open(file_path, "wb+")
                 mine_log.truncate(0)
-                mine_log_encoding = locale.getpreferredencoding(False)
+                mine_log_encoding = locale.getencoding()
 
                 try:
                     while self.running:
@@ -252,14 +251,7 @@ class MinecraftInstance:
                         if not line:
                             break
 
-                        try:
-                            linestr = line.decode(mine_log_encoding)
-                        except UnicodeDecodeError:
-                            mine_log_encoding = locale.getpreferredencoding(False)
-                            logger.error(
-                                "UnicodeDecodeError, switching to default encoding"
-                            )
-                            linestr = line.decode(mine_log_encoding)
+                        linestr = line.decode(mine_log_encoding)
 
                         if os.environ.get("MINEDOJO_DEBUG_LOG", False):
                             # Print Java logs to console
